@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Online Super Market - SaaS</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f2f6f8;
+            margin: 0;
+        }
+
+        header {
+            background: #16804b;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 25px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px #bbb;
+        }
+
+        h2 {
+            color: #16804b;
+            border-bottom: 2px solid #16804b;
+            padding-bottom: 8px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            border: 1px solid #aaa;
+            border-radius: 5px;
+        }
+
+        textarea {
+            height: 80px;
+        }
+
+        button {
+            background: #16804b;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            margin-top: 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background: #0d6339;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background: #16804b;
+            color: white;
+        }
+
+        .total {
+            text-align: right;
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        @media(max-width: 700px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>ONLINE SUPER MARKET</h1>
+    <p>Cloud-Based SaaS Application</p>
+</header>
+
+<div class="container">
+
+    <!-- Customer Information -->
+
+    <h2>Customer Information</h2>
+
+    <div class="form-grid">
+
+        <div>
+            <label>Customer Name</label>
+            <input type="text" id="customerName">
+        </div>
+
+        <div>
+            <label>Phone</label>
+            <input type="tel" id="phone">
+        </div>
+
+        <div>
+            <label>Email</label>
+            <input type="email" id="email">
+        </div>
+
+        <div>
+            <label>Address</label>
+            <textarea id="address"></textarea>
+        </div>
+
+    </div>
+
+
+    <!-- Item Classification -->
+
+    <h2>Item Classification Form</h2>
+
+    <div class="form-grid">
+
+        <div>
+            <label>Item Classification</label>
+
+            <select id="category">
+                <option value="">-- Select Category --</option>
+                <option value="Grocery">Grocery</option>
+                <option value="Fruits">Fruits</option>
+                <option value="Vegetables">Vegetables</option>
+                <option value="Dairy Products">Dairy Products</option>
+                <option value="Beverages">Beverages</option>
+                <option value="Snacks">Snacks</option>
+                <option value="Personal Care">Personal Care</option>
+                <option value="Household">Household</option>
+            </select>
+        </div>
+
+        <div>
+            <label>Item Name</label>
+
+            <select id="item">
+                <option value="">-- Select Item --</option>
+            </select>
+        </div>
+
+        <div>
+            <label>Quantity</label>
+            <input type="number" id="quantity" min="1" value="1">
+        </div>
+
+        <div>
+            <label>Price per Item (₹)</label>
+            <input type="number" id="price" readonly>
+        </div>
+
+    </div>
+
+    <button onclick="addItem()">Add Item</button>
+
+
+    <!-- Order Table -->
+
+    <h2>Order Details</h2>
+
+    <table>
+
+        <thead>
+            <tr>
+                <th>Category</th>
+                <th>Item</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+
+        <tbody id="orderTable">
+        </tbody>
+
+    </table>
+
+    <div class="total">
+        Grand Total: ₹<span id="grandTotal">0</span>
+    </div>
+
+    <button onclick="placeOrder()">Place Order</button>
+
+</div>
+
+
+<script>
+
+    const items = {
+
+        "Grocery": {
+            "Rice": 60,
+            "Wheat": 50,
+            "Sugar": 45,
+            "Dal": 100
+        },
+
+        "Fruits": {
+            "Apple": 150,
+            "Banana": 60,
+            "Orange": 100,
+            "Mango": 120
+        },
+
+        "Vegetables": {
+            "Tomato": 40,
+            "Potato": 35,
+            "Onion": 45,
+            "Carrot": 60
+        },
+
+        "Dairy Products": {
+            "Milk": 60,
+            "Curd": 40,
+            "Butter": 55,
+            "Cheese": 100
+        },
+
+        "Beverages": {
+            "Juice": 80,
+            "Tea": 120,
+            "Coffee": 150
+        },
+
+        "Snacks": {
+            "Biscuits": 30,
+            "Chips": 40,
+            "Cookies": 70
+        },
+
+        "Personal Care": {
+            "Soap": 40,
+            "Shampoo": 120,
+            "Toothpaste": 90
+        },
+
+        "Household": {
+            "Detergent": 100,
+            "Floor Cleaner": 120,
+            "Dish Wash": 80
+        }
+    };
+
+
+    let grandTotal = 0;
+
+
+    // Display items based on category
+
+    document.getElementById("category").addEventListener("change", function() {
+
+        const category = this.value;
+
+        const itemSelect = document.getElementById("item");
+
+        itemSelect.innerHTML =
+            '<option value="">-- Select Item --</option>';
+
+        document.getElementById("price").value = "";
+
+        if (category && items[category]) {
+
+            Object.keys(items[category]).forEach(function(item) {
+
+                const option =
+                    document.createElement("option");
+
+                option.value = item;
+                option.textContent = item;
+
+                itemSelect.appendChild(option);
+
+            });
+        }
+
+    });
+
+
+    // Display price
+
+    document.getElementById("item").addEventListener("change", function() {
+
+        const category =
+            document.getElementById("category").value;
+
+        const item = this.value;
+
+        if (category && item) {
+
+            document.getElementById("price").value =
+                items[category][item];
+
+        }
+
+    });
+
+
+    // Add item to order
+
+    function addItem() {
+
+        const category =
+            document.getElementById("category").value;
+
+        const item =
+            document.getElementById("item").value;
+
+        const quantity =
+            Number(document.getElementById("quantity").value);
+
+        const price =
+            Number(document.getElementById("price").value);
+
+
+        if (!category || !item || quantity <= 0) {
+
+            alert("Please select category, item and quantity.");
+
+            return;
+        }
+
+
+        const total = quantity * price;
+
+        grandTotal += total;
+
+
+        const table =
+            document.getElementById("orderTable");
+
+
+        const row =
+            document.createElement("tr");
+
+
+        row.innerHTML = `
+            <td>${category}</td>
+            <td>${item}</td>
+            <td>${quantity}</td>
+            <td>₹${price}</td>
+            <td>₹${total}</td>
+        `;
+
+
+        table.appendChild(row);
+
+
+        document.getElementById("grandTotal")
+            .textContent = grandTotal;
+
+
+        document.getElementById("quantity").value = 1;
+
+    }
+
+
+    // Place order
+
+    function placeOrder() {
+
+        const name =
+            document.getElementById("customerName").value;
+
+        const phone =
+            document.getElementById("phone").value;
+
+        const email =
+            document.getElementById("email").value;
+
+        const address =
+            document.getElementById("address").value;
+
+
+        if (!name || !phone || !email || !address) {
+
+            alert("Please enter all customer details.");
+
+            return;
+        }
+
+
+        if (grandTotal === 0) {
+
+            alert("Please add at least one item.");
+
+            return;
+        }
+
+
+        alert(
+            "Order placed successfully!\n\n" +
+            "Customer: " + name +
+            "\nPhone: " + phone +
+            "\nTotal Amount: ₹" + grandTotal
+        );
+
+    }
+
+</script>
+
+</body>
+</html>

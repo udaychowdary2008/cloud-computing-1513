@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Cloud Payroll Processing System</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f1f5f9;
+            color: #222;
+        }
+
+        header {
+            background: #166534;
+            color: white;
+            text-align: center;
+            padding: 25px;
+        }
+
+        header h1 {
+            margin-bottom: 6px;
+        }
+
+        .container {
+            width: 92%;
+            max-width: 1100px;
+            margin: 30px auto;
+        }
+
+        .payroll-box,
+        .result-box {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            color: #166534;
+            margin-bottom: 20px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 7px;
+        }
+
+        input,
+        select {
+            padding: 12px;
+            border: 1px solid #aaa;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        .process-btn {
+            width: 100%;
+            padding: 14px;
+            margin-top: 25px;
+            background: #166534;
+            color: white;
+            border: none;
+            border-radius: 7px;
+            font-size: 17px;
+            cursor: pointer;
+        }
+
+        .process-btn:hover {
+            background: #14532d;
+        }
+
+        .employee-details {
+            background: #f0fdf4;
+            padding: 18px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .salary-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        .salary-table th,
+        .salary-table td {
+            border: 1px solid #ccc;
+            padding: 12px;
+        }
+
+        .salary-table th {
+            background: #166534;
+            color: white;
+            text-align: left;
+        }
+
+        .total {
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .net-pay {
+            margin-top: 20px;
+            padding: 20px;
+            background: #dcfce7;
+            color: #166534;
+            text-align: center;
+            border-radius: 8px;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        footer {
+            margin-top: 40px;
+            background: #166534;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        @media(max-width: 700px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .salary-table {
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>💼 Cloud Payroll Processing System</h1>
+    <p>SaaS-Based Employee Salary Management System</p>
+</header>
+
+
+<div class="container">
+
+    <!-- Employee Input -->
+
+    <div class="payroll-box">
+
+        <h2>Employee Details</h2>
+
+        <div class="form-grid">
+
+            <div class="form-group">
+                <label>Employee Name</label>
+
+                <input type="text"
+                       id="employeeName"
+                       placeholder="Enter employee name">
+            </div>
+
+
+            <div class="form-group">
+                <label>Employee ID</label>
+
+                <input type="text"
+                       id="employeeId"
+                       placeholder="Enter employee ID">
+            </div>
+
+
+            <div class="form-group">
+                <label>Experience in Present Organization</label>
+
+                <input type="number"
+                       id="presentExp"
+                       min="0"
+                       step="0.1"
+                       placeholder="Years">
+            </div>
+
+
+            <div class="form-group">
+                <label>Overall Experience</label>
+
+                <input type="number"
+                       id="overallExp"
+                       min="0"
+                       step="0.1"
+                       placeholder="Years">
+            </div>
+
+
+            <div class="form-group">
+                <label>Basic Pay (₹)</label>
+
+                <input type="number"
+                       id="basicPay"
+                       min="0"
+                       placeholder="Enter basic pay">
+            </div>
+
+
+            <div class="form-group">
+                <label>HRA (₹)</label>
+
+                <input type="number"
+                       id="hra"
+                       min="0"
+                       placeholder="Enter HRA">
+            </div>
+
+
+            <div class="form-group">
+                <label>DA (₹)</label>
+
+                <input type="number"
+                       id="da"
+                       min="0"
+                       placeholder="Enter DA">
+            </div>
+
+
+            <div class="form-group">
+                <label>TA (₹)</label>
+
+                <input type="number"
+                       id="ta"
+                       min="0"
+                       placeholder="Enter TA">
+            </div>
+
+
+            <div class="form-group">
+                <label>Other Allowance (₹)</label>
+
+                <input type="number"
+                       id="otherAllowance"
+                       min="0"
+                       value="0"
+                       placeholder="Other allowance">
+            </div>
+
+
+            <div class="form-group">
+                <label>Deductions (₹)</label>
+
+                <input type="number"
+                       id="deductions"
+                       min="0"
+                       value="0"
+                       placeholder="PF / Tax / Other deductions">
+            </div>
+
+        </div>
+
+
+        <button class="process-btn"
+                onclick="processPayroll()">
+
+            ⚙️ Process Payroll
+
+        </button>
+
+    </div>
+
+
+    <!-- Salary Result -->
+
+    <div class="result-box"
+         id="resultBox"
+         style="display:none;">
+
+        <h2>📄 Employee Salary Statement</h2>
+
+
+        <div class="employee-details">
+
+            <p>
+                <b>Employee Name:</b>
+                <span id="resultName"></span>
+            </p>
+
+            <p>
+                <b>Employee ID:</b>
+                <span id="resultId"></span>
+            </p>
+
+            <p>
+                <b>Experience in Present Organization:</b>
+                <span id="resultPresentExp"></span>
+            </p>
+
+            <p>
+                <b>Overall Experience:</b>
+                <span id="resultOverallExp"></span>
+            </p>
+
+        </div>
+
+
+        <table class="salary-table">
+
+            <thead>
+                <tr>
+                    <th>Salary Component</th>
+                    <th>Amount (₹)</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <tr>
+                    <td>Basic Pay</td>
+                    <td id="resultBasic"></td>
+                </tr>
+
+                <tr>
+                    <td>HRA</td>
+                    <td id="resultHra"></td>
+                </tr>
+
+                <tr>
+                    <td>DA</td>
+                    <td id="resultDa"></td>
+                </tr>
+
+                <tr>
+                    <td>TA</td>
+                    <td id="resultTa"></td>
+                </tr>
+
+                <tr>
+                    <td>Other Allowance</td>
+                    <td id="resultOther"></td>
+                </tr>
+
+                <tr class="total">
+                    <td>Gross Pay</td>
+                    <td id="resultGross"></td>
+                </tr>
+
+                <tr>
+                    <td>Deductions</td>
+                    <td id="resultDeduction"></td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+
+        <div class="net-pay">
+
+            Net Pay: ₹<span id="resultNet"></span>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<footer>
+    <p>Cloud Payroll Processing System | SaaS Demonstration</p>
+</footer>
+
+
+<script>
+
+function processPayroll() {
+
+    // Employee details
+
+    let name =
+        document.getElementById("employeeName").value;
+
+    let employeeId =
+        document.getElementById("employeeId").value;
+
+    let presentExp =
+        Number(document.getElementById("presentExp").value);
+
+    let overallExp =
+        Number(document.getElementById("overallExp").value);
+
+
+    // Salary details
+
+    let basic =
+        Number(document.getElementById("basicPay").value);
+
+    let hra =
+        Number(document.getElementById("hra").value);
+
+    let da =
+        Number(document.getElementById("da").value);
+
+    let ta =
+        Number(document.getElementById("ta").value);
+
+    let other =
+        Number(document.getElementById("otherAllowance").value);
+
+    let deductions =
+        Number(document.getElementById("deductions").value);
+
+
+    // Validation
+
+    if(name === "" ||
+       employeeId === "" ||
+       basic <= 0) {
+
+        alert(
+            "Please enter Employee Name, Employee ID and Basic Pay."
+        );
+
+        return;
+    }
+
+
+    if(presentExp < 0 ||
+       overallExp < 0 ||
+       basic < 0 ||
+       hra < 0 ||
+       da < 0 ||
+       ta < 0 ||
+       other < 0 ||
+       deductions < 0) {
+
+        alert("Values cannot be negative.");
+
+        return;
+    }
+
+
+    // Salary calculation
+
+    let grossPay =
+        basic +
+        hra +
+        da +
+        ta +
+        other;
+
+
+    let netPay =
+        grossPay -
+        deductions;
+
+
+    if(netPay < 0) {
+
+        alert(
+            "Deductions cannot be greater than Gross Pay."
+        );
+
+        return;
+    }
+
+
+    // Display employee details
+
+    document.getElementById("resultName")
+        .innerText = name;
+
+    document.getElementById("resultId")
+        .innerText = employeeId;
+
+    document.getElementById("resultPresentExp")
+        .innerText = presentExp + " Years";
+
+    document.getElementById("resultOverallExp")
+        .innerText = overallExp + " Years";
+
+
+    // Display salary components
+
+    document.getElementById("resultBasic")
+        .innerText = basic.toFixed(2);
+
+    document.getElementById("resultHra")
+        .innerText = hra.toFixed(2);
+
+    document.getElementById("resultDa")
+        .innerText = da.toFixed(2);
+
+    document.getElementById("resultTa")
+        .innerText = ta.toFixed(2);
+
+    document.getElementById("resultOther")
+        .innerText = other.toFixed(2);
+
+    document.getElementById("resultGross")
+        .innerText = grossPay.toFixed(2);
+
+    document.getElementById("resultDeduction")
+        .innerText = deductions.toFixed(2);
+
+    document.getElementById("resultNet")
+        .innerText = netPay.toFixed(2);
+
+
+    // Show result
+
+    document.getElementById("resultBox")
+        .style.display = "block";
+
+}
+
+</script>
+
+</body>
+</html>

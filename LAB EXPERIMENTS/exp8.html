@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloud Student Counselling System</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            background: #f2f6fc;
+            color: #222;
+        }
+
+        header {
+            background: #1565c0;
+            color: white;
+            text-align: center;
+            padding: 25px;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        header p {
+            margin-top: 8px;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 30px auto;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            color: #1565c0;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        button {
+            background: #1565c0;
+            color: white;
+            border: none;
+            padding: 13px 25px;
+            margin-top: 20px;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #0d47a1;
+        }
+
+        .result {
+            display: none;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            width: 35%;
+            background: #1565c0;
+            color: white;
+        }
+
+        .recommendation {
+            margin-top: 20px;
+            padding: 20px;
+            background: #e8f3ff;
+            border-left: 5px solid #1565c0;
+            border-radius: 6px;
+        }
+
+        .recommendation h3 {
+            color: #1565c0;
+            margin-top: 0;
+        }
+
+        footer {
+            background: #1565c0;
+            color: white;
+            text-align: center;
+            padding: 15px;
+        }
+
+        @media(max-width: 700px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .full-width {
+                grid-column: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>☁️ Cloud Student Counselling System</h1>
+    <p>SaaS-Based Student Counselling and Career Guidance</p>
+</header>
+
+<div class="container">
+
+    <!-- Student Details -->
+    <div class="card">
+
+        <h2>Student Information</h2>
+
+        <div class="form-grid">
+
+            <div>
+                <label>Student Name</label>
+                <input type="text" id="studentName"
+                       placeholder="Enter student name">
+            </div>
+
+            <div>
+                <label>Age</label>
+                <input type="number" id="age"
+                       placeholder="Enter age">
+            </div>
+
+            <div>
+                <label>Phone Number</label>
+                <input type="tel" id="phone"
+                       placeholder="Enter phone number">
+            </div>
+
+            <div>
+                <label>Year of Passing</label>
+                <input type="number" id="passingYear"
+                       placeholder="Example: 2026">
+            </div>
+
+            <div class="full-width">
+                <label>Address</label>
+                <textarea id="address"
+                          placeholder="Enter student address"></textarea>
+            </div>
+
+            <div class="full-width">
+                <label>Subjects Studied</label>
+                <textarea id="subjects"
+                          placeholder="Example: Mathematics, Physics, Chemistry, Computer Science"></textarea>
+            </div>
+
+            <div>
+                <label>Percentage of Marks</label>
+                <input type="number" id="percentage"
+                       min="0" max="100"
+                       placeholder="Enter percentage">
+            </div>
+
+            <div>
+                <label>Domain Interest</label>
+                <select id="domain">
+                    <option value="">Select Domain</option>
+                    <option>Artificial Intelligence</option>
+                    <option>Cloud Computing</option>
+                    <option>Cyber Security</option>
+                    <option>Data Science</option>
+                    <option>Software Development</option>
+                    <option>Electronics</option>
+                    <option>Mechanical Engineering</option>
+                    <option>Civil Engineering</option>
+                    <option>Business Management</option>
+                    <option>Research</option>
+                    <option>Other</option>
+                </select>
+            </div>
+
+            <div>
+                <label>Preferred Career</label>
+                <select id="career">
+                    <option value="">Select Career</option>
+                    <option>Software Engineer</option>
+                    <option>Data Scientist</option>
+                    <option>AI Engineer</option>
+                    <option>Cyber Security Analyst</option>
+                    <option>Cloud Engineer</option>
+                    <option>Electronics Engineer</option>
+                    <option>Mechanical Engineer</option>
+                    <option>Business Manager</option>
+                    <option>Researcher</option>
+                    <option>Not Decided</option>
+                </select>
+            </div>
+
+            <div>
+                <label>Counselling Type</label>
+                <select id="counsellingType">
+                    <option value="">Select Type</option>
+                    <option>Academic Counselling</option>
+                    <option>Career Counselling</option>
+                    <option>Higher Studies</option>
+                    <option>Job Guidance</option>
+                    <option>Skill Development</option>
+                </select>
+            </div>
+
+            <div class="full-width">
+                <label>Student's Questions / Requirements</label>
+                <textarea id="requirements"
+                          placeholder="Enter counselling requirements"></textarea>
+            </div>
+
+        </div>
+
+        <button onclick="generateCounselling()">
+            📋 Generate Counselling Report
+        </button>
+
+    </div>
+
+
+    <!-- Counselling Result -->
+    <div class="card result" id="result">
+
+        <h2>Student Counselling Report</h2>
+
+        <table>
+
+            <tr>
+                <th>Student Name</th>
+                <td id="resultName"></td>
+            </tr>
+
+            <tr>
+                <th>Age</th>
+                <td id="resultAge"></td>
+            </tr>
+
+            <tr>
+                <th>Address</th>
+                <td id="resultAddress"></td>
+            </tr>
+
+            <tr>
+                <th>Phone</th>
+                <td id="resultPhone"></td>
+            </tr>
+
+            <tr>
+                <th>Subjects Studied</th>
+                <td id="resultSubjects"></td>
+            </tr>
+
+            <tr>
+                <th>Year of Passing</th>
+                <td id="resultYear"></td>
+            </tr>
+
+            <tr>
+                <th>Percentage of Marks</th>
+                <td id="resultPercentage"></td>
+            </tr>
+
+            <tr>
+                <th>Domain Interest</th>
+                <td id="resultDomain"></td>
+            </tr>
+
+            <tr>
+                <th>Preferred Career</th>
+                <td id="resultCareer"></td>
+            </tr>
+
+            <tr>
+                <th>Counselling Type</th>
+                <td id="resultCounselling"></td>
+            </tr>
+
+            <tr>
+                <th>Requirements</th>
+                <td id="resultRequirements"></td>
+            </tr>
+
+        </table>
+
+
+        <div class="recommendation">
+
+            <h3>🎯 Counselling Recommendation</h3>
+
+            <p id="recommendation"></p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<footer>
+    Cloud Student Counselling System | SaaS Demonstration
+</footer>
+
+
+<script>
+
+function generateCounselling() {
+
+    let name = document.getElementById("studentName").value;
+    let age = document.getElementById("age").value;
+    let address = document.getElementById("address").value;
+    let phone = document.getElementById("phone").value;
+    let subjects = document.getElementById("subjects").value;
+    let year = document.getElementById("passingYear").value;
+    let percentage = Number(
+        document.getElementById("percentage").value
+    );
+
+    let domain = document.getElementById("domain").value;
+    let career = document.getElementById("career").value;
+    let counselling = document.getElementById("counsellingType").value;
+    let requirements = document.getElementById("requirements").value;
+
+
+    // Validation
+    if (
+        name === "" ||
+        age === "" ||
+        address === "" ||
+        phone === "" ||
+        subjects === "" ||
+        year === "" ||
+        percentage === 0 ||
+        domain === "" ||
+        counselling === ""
+    ) {
+        alert("Please fill all required fields.");
+        return;
+    }
+
+    if (percentage < 0 || percentage > 100) {
+        alert("Percentage must be between 0 and 100.");
+        return;
+    }
+
+
+    // Display student information
+
+    document.getElementById("resultName").innerText = name;
+    document.getElementById("resultAge").innerText = age;
+    document.getElementById("resultAddress").innerText = address;
+    document.getElementById("resultPhone").innerText = phone;
+    document.getElementById("resultSubjects").innerText = subjects;
+    document.getElementById("resultYear").innerText = year;
+    document.getElementById("resultPercentage").innerText =
+        percentage + "%";
+
+    document.getElementById("resultDomain").innerText = domain;
+    document.getElementById("resultCareer").innerText =
+        career || "Not specified";
+
+    document.getElementById("resultCounselling").innerText =
+        counselling;
+
+    document.getElementById("resultRequirements").innerText =
+        requirements || "No specific requirement";
+
+
+    // Generate recommendation
+
+    let recommendation = "";
+
+    if (percentage >= 80) {
+
+        recommendation =
+            "The student has good academic performance. " +
+            "Higher studies and advanced skill development are recommended. " +
+            "The student can focus strongly on " + domain + ".";
+
+    } else if (percentage >= 60) {
+
+        recommendation =
+            "The student has a good academic foundation. " +
+            "The student should improve technical and practical skills " +
+            "while developing knowledge in " + domain + ".";
+
+    } else if (percentage >= 50) {
+
+        recommendation =
+            "The student should improve academic performance " +
+            "and focus on practical skills related to " + domain + ".";
+
+    } else {
+
+        recommendation =
+            "The student needs additional academic support. " +
+            "Basic skills, subject knowledge and career guidance " +
+            "should be improved before selecting a career path.";
+
+    }
+
+
+    document.getElementById("recommendation").innerText =
+        recommendation;
+
+
+    document.getElementById("result").style.display = "block";
+
+    // Scroll to report
+    document.getElementById("result").scrollIntoView({
+        behavior: "smooth"
+    });
+}
+
+</script>
+
+</body>
+</html>

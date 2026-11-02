@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Online Supermarket - SaaS</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #f2f2f2;
+            margin: 0;
+        }
+
+        .container {
+            width: 600px;
+            margin: 30px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px gray;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin-top: 12px;
+            font-weight: bold;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 20px;
+            background: green;
+            color: white;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #e8f5e9;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Online Supermarket</h1>
+
+    <form onsubmit="placeOrder(event)">
+
+        <label>Customer Name</label>
+        <input type="text" id="name" required>
+
+        <label>Address</label>
+        <input type="text" id="address" required>
+
+        <label>Phone Number</label>
+        <input type="tel" id="phone" required>
+
+        <label>Email</label>
+        <input type="email" id="email" required>
+
+        <label>Item Classification</label>
+        <select id="category" onchange="loadItems()" required>
+            <option value="">-- Select Category --</option>
+            <option value="Fruits">Fruits</option>
+            <option value="Vegetables">Vegetables</option>
+            <option value="Grocery">Grocery</option>
+            <option value="Dairy">Dairy</option>
+            <option value="Beverages">Beverages</option>
+            <option value="Snacks">Snacks</option>
+            <option value="Personal Care">Personal Care</option>
+        </select>
+
+        <label>Item</label>
+        <select id="item" required>
+            <option value="">-- Select Item --</option>
+        </select>
+
+        <label>Quantity</label>
+        <input type="number" id="quantity" min="1" value="1" required>
+
+        <label>Price per Item (₹)</label>
+        <input type="number" id="price" min="1" required>
+
+        <button type="submit">Place Order</button>
+
+    </form>
+
+    <div id="result"></div>
+
+</div>
+
+<script>
+
+const items = {
+    "Fruits": ["Apple", "Banana", "Orange", "Mango"],
+    "Vegetables": ["Tomato", "Potato", "Carrot", "Onion"],
+    "Grocery": ["Rice", "Wheat", "Sugar", "Dal"],
+    "Dairy": ["Milk", "Curd", "Butter", "Cheese"],
+    "Beverages": ["Tea", "Coffee", "Juice", "Soft Drink"],
+    "Snacks": ["Biscuits", "Chips", "Chocolate", "Nuts"],
+    "Personal Care": ["Soap", "Shampoo", "Toothpaste", "Face Wash"]
+};
+
+function loadItems() {
+
+    let category = document.getElementById("category").value;
+    let itemBox = document.getElementById("item");
+
+    itemBox.innerHTML =
+        '<option value="">-- Select Item --</option>';
+
+    if (items[category]) {
+
+        items[category].forEach(function(item) {
+
+            let option = document.createElement("option");
+
+            option.value = item;
+            option.text = item;
+
+            itemBox.appendChild(option);
+        });
+    }
+}
+
+function placeOrder(event) {
+
+    event.preventDefault();
+
+    let name = document.getElementById("name").value;
+    let item = document.getElementById("item").value;
+    let quantity = document.getElementById("quantity").value;
+    let price = document.getElementById("price").value;
+
+    let total = quantity * price;
+
+    document.getElementById("result").innerHTML =
+        "<h3>Order Placed Successfully!</h3>" +
+        "<b>Customer:</b> " + name + "<br>" +
+        "<b>Item:</b> " + item + "<br>" +
+        "<b>Quantity:</b> " + quantity + "<br>" +
+        "<b>Total Amount:</b> ₹" + total;
+}
+
+</script>
+
+</body>
+</html>

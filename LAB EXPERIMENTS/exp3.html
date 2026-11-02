@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloud Cab Booking System</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f1f5f9;
+            color: #222;
+        }
+
+        header {
+            background: #0f766e;
+            color: white;
+            text-align: center;
+            padding: 22px;
+        }
+
+        header h1 {
+            margin-bottom: 6px;
+        }
+
+        .container {
+            width: 92%;
+            max-width: 1000px;
+            margin: 30px auto;
+        }
+
+        .booking-box {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+        }
+
+        .booking-types {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 25px;
+        }
+
+        .booking-types button {
+            padding: 12px 25px;
+            border: 1px solid #0f766e;
+            border-radius: 6px;
+            background: white;
+            color: #0f766e;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .booking-types button.active {
+            background: #0f766e;
+            color: white;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-weight: bold;
+            margin-bottom: 7px;
+        }
+
+        input,
+        select {
+            padding: 12px;
+            border: 1px solid #aaa;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        .search-btn {
+            width: 100%;
+            padding: 14px;
+            margin-top: 25px;
+            border: none;
+            border-radius: 7px;
+            background: #0f766e;
+            color: white;
+            font-size: 17px;
+            cursor: pointer;
+        }
+
+        .search-btn:hover {
+            background: #115e59;
+        }
+
+        #results {
+            margin-top: 25px;
+        }
+
+        .cab-card {
+            background: white;
+            margin: 15px 0;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .cab-card h3 {
+            color: #0f766e;
+            margin-bottom: 12px;
+        }
+
+        .cab-info {
+            display: flex;
+            justify-content: space-between;
+            margin: 8px 0;
+            gap: 20px;
+        }
+
+        .book-btn {
+            margin-top: 15px;
+            padding: 10px 22px;
+            border: none;
+            border-radius: 5px;
+            background: #16a34a;
+            color: white;
+            cursor: pointer;
+        }
+
+        footer {
+            margin-top: 40px;
+            background: #0f766e;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        @media(max-width: 700px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cab-info {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>🚕 Cloud Cab Booking System</h1>
+    <p>SaaS-Based Car Booking Reservation Application</p>
+</header>
+
+<div class="container">
+
+    <div class="booking-box">
+
+        <!-- Booking Type -->
+        <div class="booking-types">
+
+            <button id="cabBtn"
+                    class="active"
+                    onclick="setBookingType('Search for Cabs')">
+                Search for Cabs
+            </button>
+
+            <button id="rentalBtn"
+                    onclick="setBookingType('Rental')">
+                Rental
+            </button>
+
+            <button id="outstationBtn"
+                    onclick="setBookingType('Out Station')">
+                Out Station
+            </button>
+
+        </div>
+
+        <!-- Form -->
+        <div class="form-grid">
+
+            <div class="form-group">
+                <label>From</label>
+                <input type="text"
+                       id="from"
+                       placeholder="Enter pickup location">
+            </div>
+
+            <div class="form-group">
+                <label>To</label>
+                <input type="text"
+                       id="to"
+                       placeholder="Enter destination">
+            </div>
+
+            <div class="form-group">
+                <label>Travel Date</label>
+                <input type="date"
+                       id="date">
+            </div>
+
+            <div class="form-group">
+                <label>Pickup Time</label>
+                <input type="time"
+                       id="time">
+            </div>
+
+            <div class="form-group">
+                <label>Package Type</label>
+
+                <select id="packageType">
+                    <option value="">Select Package</option>
+                    <option>Local Ride</option>
+                    <option>Rental - 4 Hours</option>
+                    <option>Rental - 8 Hours</option>
+                    <option>Out Station - One Way</option>
+                    <option>Out Station - Round Trip</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Hours / Days</label>
+
+                <select id="duration">
+                    <option value="">Select Duration</option>
+                    <option>2 Hours</option>
+                    <option>4 Hours</option>
+                    <option>6 Hours</option>
+                    <option>8 Hours</option>
+                    <option>1 Day</option>
+                    <option>2 Days</option>
+                    <option>3 Days</option>
+                    <option>5 Days</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Car Type</label>
+
+                <select id="carType">
+                    <option>Sedan</option>
+                    <option>Hatchback</option>
+                    <option>SUV</option>
+                    <option>Luxury Car</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Passengers</label>
+
+                <select id="passengers">
+                    <option>1 Passenger</option>
+                    <option>2 Passengers</option>
+                    <option>3 Passengers</option>
+                    <option>4 Passengers</option>
+                    <option>5 Passengers</option>
+                    <option>6 Passengers</option>
+                    <option>7+ Passengers</option>
+                </select>
+            </div>
+
+        </div>
+
+        <button class="search-btn"
+                onclick="searchCabs()">
+            🔍 Search Cabs
+        </button>
+
+    </div>
+
+    <!-- Search Results -->
+    <div id="results"></div>
+
+</div>
+
+<footer>
+    <p>Cloud Cab Booking System | SaaS Demonstration</p>
+</footer>
+
+
+<script>
+
+let bookingType = "Search for Cabs";
+
+
+function setBookingType(type) {
+
+    bookingType = type;
+
+    document.getElementById("cabBtn")
+        .classList.remove("active");
+
+    document.getElementById("rentalBtn")
+        .classList.remove("active");
+
+    document.getElementById("outstationBtn")
+        .classList.remove("active");
+
+
+    if(type === "Search for Cabs") {
+        document.getElementById("cabBtn")
+            .classList.add("active");
+    }
+
+    if(type === "Rental") {
+        document.getElementById("rentalBtn")
+            .classList.add("active");
+    }
+
+    if(type === "Out Station") {
+        document.getElementById("outstationBtn")
+            .classList.add("active");
+    }
+}
+
+
+function searchCabs() {
+
+    let from =
+        document.getElementById("from").value;
+
+    let to =
+        document.getElementById("to").value;
+
+    let date =
+        document.getElementById("date").value;
+
+    let time =
+        document.getElementById("time").value;
+
+    let packageType =
+        document.getElementById("packageType").value;
+
+    let duration =
+        document.getElementById("duration").value;
+
+    let carType =
+        document.getElementById("carType").value;
+
+    let passengers =
+        document.getElementById("passengers").value;
+
+
+    if(from === "" ||
+       to === "" ||
+       date === "" ||
+       packageType === "" ||
+       duration === "") {
+
+        alert(
+            "Please fill From, To, Date, Package Type and Hours/Days."
+        );
+
+        return;
+    }
+
+
+    document.getElementById("results").innerHTML = `
+
+        <h2>Available Cabs</h2>
+
+        <div class="cab-card">
+
+            <h3>🚕 CityRide Cab</h3>
+
+            <div class="cab-info">
+
+                <span>
+                    <b>Booking:</b>
+                    ${bookingType}
+                </span>
+
+                <span>
+                    <b>Car:</b>
+                    ${carType}
+                </span>
+
+            </div>
+
+            <div class="cab-info">
+
+                <span>
+                    <b>From:</b>
+                    ${from}
+                </span>
+
+                <span>
+                    <b>To:</b>
+                    ${to}
+                </span>
+
+            </div>
+
+            <div class="cab-info">
+
+                <span>
+                    <b>Date:</b>
+                    ${date}
+                </span>
+
+                <span>
+                    <b>Time:</b>
+                    ${time || "Flexible"}
+                </span>
+
+            </div>
+
+            <div class="cab-info">
+
+                <span>
+                    <b>Package:</b>
+                    ${packageType}
+                </span>
+
+                <span>
+                    <b>Duration:</b>
+                    ${duration}
+                </span>
+
+            </div>
+
+            <div class="cab-info">
+
+                <span>
+                    <b>Passengers:</b>
+                    ${passengers}
+                </span>
+
+                <span>
+                    <b>Estimated Fare:</b>
+                    ₹1,499
+                </span>
+
+            </div>
+
+            <button class="book-btn"
+                    onclick="bookCab()">
+                Book Cab
+            </button>
+
+        </div>
+
+
+        <div class="cab-card">
+
+            <h3>🚙 QuickCab Services</h3>
+
+            <div class="cab-info">
+
+                <span>
+                    <b>Booking:</b>
+                    ${bookingType}
+                </span>
+
+                <span>
+                    <b>Car:</b>
+                    ${carType}
+                </span>
+
+            </div>
+
+            <div class="cab-info">
+
+                <span>
+                    <b>Route:</b>
+                    ${from} → ${to}
+                </span>
+
+                <span>
+                    <b>Duration:</b>
+                    ${duration}
+                </span>
+
+            </div>
+
+            <div class="cab-info">
+
+                <span>
+                    <b>Package:</b>
+                    ${packageType}
+                </span>
+
+                <span>
+                    <b>Passengers:</b>
+                    ${passengers}
+                </span>
+
+            </div>
+
+            <div class="cab-info">
+
+                <span>
+                    <b>Estimated Fare:</b>
+                    ₹1,799
+                </span>
+            </div>
+
+            <button class="book-btn"
+                    onclick="bookCab()">
+                Book Cab
+            </button>
+
+        </div>
+    `;
+}
+
+
+function bookCab() {
+
+    alert(
+        "Cab booking request submitted successfully!"
+    );
+
+}
+
+</script>
+
+</body>
+</html>

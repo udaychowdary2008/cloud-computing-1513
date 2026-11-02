@@ -1,0 +1,369 @@
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Information System - SaaS</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f2f2f2;
+        }
+
+        .container {
+            width: 700px;
+            margin: 30px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px gray;
+        }
+
+        h1, h2 {
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 9px;
+            margin-top: 5px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 20px;
+            background: green;
+            color: white;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: darkgreen;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background: #ddd;
+        }
+
+        #report {
+            display: none;
+            margin-top: 25px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Student Information System</h1>
+    <h2>SaaS Cloud Application</h2>
+
+    <form onsubmit="generateReport(event)">
+
+        <label>Student Name</label>
+        <input type="text" id="name" required>
+
+        <label>Register Number</label>
+        <input type="text" id="regno" required>
+
+        <label>Address</label>
+        <input type="text" id="address" required>
+
+        <label>Phone Number</label>
+        <input type="tel" id="phone" required>
+
+        <label>Age</label>
+        <input type="number" id="age" required>
+
+        <label>Course</label>
+        <select id="course" required>
+            <option value="">Select Course</option>
+            <option>Computer Science</option>
+            <option>Information Technology</option>
+            <option>Artificial Intelligence</option>
+            <option>Electronics and Communication</option>
+            <option>Mechanical Engineering</option>
+        </select>
+
+        <h3>Semester Marks</h3>
+
+        <label>Programming</label>
+        <input type="number" id="programming" min="0" max="100" required>
+
+        <label>Mathematics</label>
+        <input type="number" id="maths" min="0" max="100" required>
+
+        <label>Computer Networks</label>
+        <input type="number" id="network" min="0" max="100" required>
+
+        <label>Database</label>
+        <input type="number" id="database" min="0" max="100" required>
+
+        <label>Cloud Computing</label>
+        <input type="number" id="cloud" min="0" max="100" required>
+
+        <label>Attendance Percentage</label>
+        <input type="number" id="attendance"
+               min="0" max="100" required>
+
+        <button type="submit">Generate Student Report</button>
+
+    </form>
+
+    <div id="report">
+
+        <h2>Student Report</h2>
+
+        <table>
+            <tr>
+                <th>Student Name</th>
+                <td id="rname"></td>
+            </tr>
+
+            <tr>
+                <th>Register Number</th>
+                <td id="rregno"></td>
+            </tr>
+
+            <tr>
+                <th>Address</th>
+                <td id="raddress"></td>
+            </tr>
+
+            <tr>
+                <th>Phone</th>
+                <td id="rphone"></td>
+            </tr>
+
+            <tr>
+                <th>Age</th>
+                <td id="rage"></td>
+            </tr>
+
+            <tr>
+                <th>Course</th>
+                <td id="rcourse"></td>
+            </tr>
+        </table>
+
+        <h3>Semester Mark Sheet</h3>
+
+        <table>
+            <tr>
+                <th>Subject</th>
+                <th>Marks</th>
+            </tr>
+
+            <tr>
+                <td>Programming</td>
+                <td id="rprogramming"></td>
+            </tr>
+
+            <tr>
+                <td>Mathematics</td>
+                <td id="rmaths"></td>
+            </tr>
+
+            <tr>
+                <td>Computer Networks</td>
+                <td id="rnetwork"></td>
+            </tr>
+
+            <tr>
+                <td>Database</td>
+                <td id="rdatabase"></td>
+            </tr>
+
+            <tr>
+                <td>Cloud Computing</td>
+                <td id="rcloud"></td>
+            </tr>
+
+            <tr>
+                <th>Total Marks</th>
+                <th id="total"></th>
+            </tr>
+
+            <tr>
+                <th>Average</th>
+                <th id="average"></th>
+            </tr>
+
+            <tr>
+                <th>Grade</th>
+                <th id="grade"></th>
+            </tr>
+        </table>
+
+        <h3>Attendance Report</h3>
+
+        <table>
+            <tr>
+                <th>Attendance</th>
+                <td id="rattendance"></td>
+            </tr>
+
+            <tr>
+                <th>Status</th>
+                <td id="status"></td>
+            </tr>
+        </table>
+
+        <h3>Progress Report</h3>
+
+        <table>
+            <tr>
+                <th>Progress</th>
+                <td id="progress"></td>
+            </tr>
+        </table>
+
+    </div>
+
+</div>
+
+<script>
+
+function generateReport(event) {
+
+    event.preventDefault();
+
+    // Student details
+    document.getElementById("rname").innerHTML =
+        document.getElementById("name").value;
+
+    document.getElementById("rregno").innerHTML =
+        document.getElementById("regno").value;
+
+    document.getElementById("raddress").innerHTML =
+        document.getElementById("address").value;
+
+    document.getElementById("rphone").innerHTML =
+        document.getElementById("phone").value;
+
+    document.getElementById("rage").innerHTML =
+        document.getElementById("age").value;
+
+    document.getElementById("rcourse").innerHTML =
+        document.getElementById("course").value;
+
+
+    // Marks
+    let programming =
+        Number(document.getElementById("programming").value);
+
+    let maths =
+        Number(document.getElementById("maths").value);
+
+    let network =
+        Number(document.getElementById("network").value);
+
+    let database =
+        Number(document.getElementById("database").value);
+
+    let cloud =
+        Number(document.getElementById("cloud").value);
+
+    let attendance =
+        Number(document.getElementById("attendance").value);
+
+
+    document.getElementById("rprogramming").innerHTML = programming;
+    document.getElementById("rmaths").innerHTML = maths;
+    document.getElementById("rnetwork").innerHTML = network;
+    document.getElementById("rdatabase").innerHTML = database;
+    document.getElementById("rcloud").innerHTML = cloud;
+
+
+    // Total and average
+    let total =
+        programming + maths + network + database + cloud;
+
+    let average = total / 5;
+
+    document.getElementById("total").innerHTML =
+        total + " / 500";
+
+    document.getElementById("average").innerHTML =
+        average.toFixed(2);
+
+
+    // Grade
+    let grade;
+
+    if (average >= 90)
+        grade = "A+";
+    else if (average >= 80)
+        grade = "A";
+    else if (average >= 70)
+        grade = "B";
+    else if (average >= 60)
+        grade = "C";
+    else if (average >= 50)
+        grade = "D";
+    else
+        grade = "F";
+
+    document.getElementById("grade").innerHTML = grade;
+
+
+    // Attendance
+    document.getElementById("rattendance").innerHTML =
+        attendance + "%";
+
+    if (attendance >= 75)
+        document.getElementById("status").innerHTML =
+            "Eligible";
+    else
+        document.getElementById("status").innerHTML =
+            "Attendance Shortage";
+
+
+    // Progress
+    let progress;
+
+    if (average >= 75)
+        progress = "Excellent";
+    else if (average >= 60)
+        progress = "Good";
+    else if (average >= 50)
+        progress = "Average";
+    else
+        progress = "Needs Improvement";
+
+    document.getElementById("progress").innerHTML =
+        progress;
+
+
+    // Display report
+    document.getElementById("report").style.display = "block";
+}
+
+</script>
+
+</body>
+</html>
+```

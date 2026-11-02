@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Cloud Flight Reservation System</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #eef3f8;
+            color: #222;
+        }
+
+        header {
+            background: #075985;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin-bottom: 5px;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1000px;
+            margin: 30px auto;
+        }
+
+        .search-box {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .trip-type {
+            display: flex;
+            gap: 25px;
+            margin-bottom: 20px;
+        }
+
+        .trip-type label {
+            font-weight: bold;
+        }
+
+        .flight-type {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .flight-type button {
+            padding: 10px 20px;
+            border: 1px solid #075985;
+            background: white;
+            color: #075985;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .flight-type button.active {
+            background: #075985;
+            color: white;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            margin-bottom: 7px;
+            font-weight: bold;
+        }
+
+        input, select {
+            padding: 12px;
+            border: 1px solid #bbb;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        .search-btn {
+            width: 100%;
+            margin-top: 25px;
+            padding: 14px;
+            background: #075985;
+            color: white;
+            border: none;
+            border-radius: 7px;
+            font-size: 17px;
+            cursor: pointer;
+        }
+
+        .search-btn:hover {
+            background: #0369a1;
+        }
+
+        #results {
+            margin-top: 25px;
+        }
+
+        .flight-card {
+            background: white;
+            margin: 15px 0;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+
+        .flight-card h3 {
+            color: #075985;
+            margin-bottom: 10px;
+        }
+
+        .flight-info {
+            display: flex;
+            justify-content: space-between;
+            margin: 8px 0;
+        }
+
+        .book-btn {
+            margin-top: 12px;
+            padding: 10px 18px;
+            background: #16a34a;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        footer {
+            margin-top: 40px;
+            padding: 20px;
+            text-align: center;
+            background: #075985;
+            color: white;
+        }
+
+        @media(max-width: 700px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .flight-info {
+                flex-direction: column;
+                gap: 5px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>✈ Cloud Flight Reservation System</h1>
+    <p>SaaS-Based Flight Booking Application</p>
+</header>
+
+<div class="container">
+
+    <div class="search-box">
+
+        <div class="trip-type">
+            <label>
+                <input type="radio" name="trip" value="oneway" checked
+                       onclick="toggleReturn(false)">
+                One Way
+            </label>
+
+            <label>
+                <input type="radio" name="trip" value="round"
+                       onclick="toggleReturn(true)">
+                Round Trip
+            </label>
+        </div>
+
+        <div class="flight-type">
+            <button id="domesticBtn"
+                    class="active"
+                    onclick="setFlightType('Domestic')">
+                Domestic
+            </button>
+
+            <button id="internationalBtn"
+                    onclick="setFlightType('International')">
+                International
+            </button>
+        </div>
+
+        <div class="form-grid">
+
+            <div class="form-group">
+                <label>From</label>
+                <select id="from">
+                    <option value="">Select departure city</option>
+                    <option>Chennai (MAA)</option>
+                    <option>Mumbai (BOM)</option>
+                    <option>Delhi (DEL)</option>
+                    <option>Bangalore (BLR)</option>
+                    <option>Hyderabad (HYD)</option>
+                    <option>Kolkata (CCU)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>To</label>
+                <select id="to">
+                    <option value="">Select destination</option>
+                    <option>Chennai (MAA)</option>
+                    <option>Mumbai (BOM)</option>
+                    <option>Delhi (DEL)</option>
+                    <option>Bangalore (BLR)</option>
+                    <option>Hyderabad (HYD)</option>
+                    <option>Kolkata (CCU)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Departure Date</label>
+                <input type="date" id="departure">
+            </div>
+
+            <div class="form-group" id="returnGroup">
+                <label>Return Date</label>
+                <input type="date" id="returnDate" disabled>
+            </div>
+
+            <div class="form-group">
+                <label>Travelers</label>
+                <select id="travelers">
+                    <option>1 Traveler</option>
+                    <option>2 Travelers</option>
+                    <option>3 Travelers</option>
+                    <option>4 Travelers</option>
+                    <option>5 Travelers</option>
+                    <option>6 Travelers</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Class</label>
+                <select id="classType">
+                    <option>Economy</option>
+                    <option>Premium Economy</option>
+                    <option>Business</option>
+                    <option>First Class</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Fare Type</label>
+                <select id="fare">
+                    <option>Regular Fare</option>
+                    <option>Student Fare</option>
+                    <option>Senior Citizen Fare</option>
+                    <option>Armed Forces Fare</option>
+                    <option>Corporate Fare</option>
+                </select>
+            </div>
+
+        </div>
+
+        <button class="search-btn" onclick="searchFlights()">
+            🔍 Search Flights
+        </button>
+
+    </div>
+
+    <div id="results"></div>
+
+</div>
+
+<footer>
+    <p>Cloud Flight Reservation System | SaaS Demonstration</p>
+</footer>
+
+<script>
+
+let flightType = "Domestic";
+
+function setFlightType(type) {
+
+    flightType = type;
+
+    document.getElementById("domesticBtn")
+        .classList.remove("active");
+
+    document.getElementById("internationalBtn")
+        .classList.remove("active");
+
+    if(type === "Domestic") {
+        document.getElementById("domesticBtn")
+            .classList.add("active");
+    } else {
+        document.getElementById("internationalBtn")
+            .classList.add("active");
+    }
+}
+
+function toggleReturn(isRoundTrip) {
+
+    let returnDate = document.getElementById("returnDate");
+
+    returnDate.disabled = !isRoundTrip;
+
+    if(!isRoundTrip) {
+        returnDate.value = "";
+    }
+}
+
+function searchFlights() {
+
+    let from = document.getElementById("from").value;
+    let to = document.getElementById("to").value;
+    let departure = document.getElementById("departure").value;
+    let returnDate = document.getElementById("returnDate").value;
+    let travelers = document.getElementById("travelers").value;
+    let classType = document.getElementById("classType").value;
+    let fare = document.getElementById("fare").value;
+
+    let trip = document.querySelector(
+        'input[name="trip"]:checked'
+    ).value;
+
+    if(from === "" || to === "" || departure === "") {
+        alert("Please fill From, To and Departure Date.");
+        return;
+    }
+
+    if(from === to) {
+        alert("From and To cities cannot be the same.");
+        return;
+    }
+
+    if(trip === "round" && returnDate === "") {
+        alert("Please select Return Date.");
+        return;
+    }
+
+    let results = document.getElementById("results");
+
+    results.innerHTML = `
+        <h2>Available Flights</h2>
+
+        <div class="flight-card">
+
+            <h3>✈ Air India Express</h3>
+
+            <div class="flight-info">
+                <span>
+                    <b>Route:</b> ${from} → ${to}
+                </span>
+
+                <span>
+                    <b>Type:</b> ${flightType}
+                </span>
+            </div>
+
+            <div class="flight-info">
+                <span>
+                    <b>Departure:</b> ${departure}
+                </span>
+
+                <span>
+                    <b>Trip:</b>
+                    ${trip === "round" ? "Round Trip" : "One Way"}
+                </span>
+            </div>
+
+            <div class="flight-info">
+                <span>
+                    <b>Travelers:</b> ${travelers}
+                </span>
+
+                <span>
+                    <b>Class:</b> ${classType}
+                </span>
+            </div>
+
+            <div class="flight-info">
+                <span>
+                    <b>Fare:</b> ${fare}
+                </span>
+
+                <span>
+                    <b>Price:</b> ₹5,999
+                </span>
+            </div>
+
+            <button class="book-btn"
+                    onclick="bookFlight()">
+                Book Flight
+            </button>
+
+        </div>
+
+        <div class="flight-card">
+
+            <h3>✈ IndiGo</h3>
+
+            <div class="flight-info">
+                <span>
+                    <b>Route:</b> ${from} → ${to}
+                </span>
+
+                <span>
+                    <b>Type:</b> ${flightType}
+                </span>
+            </div>
+
+            <div class="flight-info">
+                <span>
+                    <b>Departure:</b> ${departure}
+                </span>
+
+                <span>
+                    <b>Class:</b> ${classType}
+                </span>
+            </div>
+
+            <div class="flight-info">
+                <span>
+                    <b>Travelers:</b> ${travelers}
+                </span>
+
+                <span>
+                    <b>Fare:</b> ${fare}
+                </span>
+            </div>
+
+            <div class="flight-info">
+                <span>
+                    <b>Price:</b> ₹6,499
+                </span>
+            </div>
+
+            <button class="book-btn"
+                    onclick="bookFlight()">
+                Book Flight
+            </button>
+
+        </div>
+    `;
+}
+
+function bookFlight() {
+    alert("Flight selected successfully! Proceeding to booking.");
+}
+
+</script>
+
+</body>
+</html>
