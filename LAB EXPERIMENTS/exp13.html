@@ -1,0 +1,115 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Virtual Machine Creation</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #eaf2f8;
+            text-align: center;
+            padding: 30px;
+        }
+
+        .container {
+            background: white;
+            width: 400px;
+            margin: auto;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 0 10px gray;
+        }
+
+        h2 {
+            color: #1565c0;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        input, select {
+            width: 90%;
+            padding: 10px;
+            margin-top: 5px;
+        }
+
+        button {
+            background: #1565c0;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            margin-top: 20px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        #result {
+            margin-top: 20px;
+            color: green;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>Virtual Machine Creation</h2>
+    <p>Type-2 Virtualization Software</p>
+
+    <label>Virtual Machine Name</label>
+    <input type="text" id="vmname" value="Ubuntu VM">
+
+    <label>Operating System</label>
+    <select id="os">
+        <option>Ubuntu Linux</option>
+        <option>Windows</option>
+        <option>Linux</option>
+    </select>
+
+    <label>Number of CPU</label>
+    <input type="number" id="cpu" value="1" min="1">
+
+    <label>RAM (GB)</label>
+    <input type="number" id="ram" value="2" min="1">
+
+    <label>Storage (GB)</label>
+    <input type="number" id="storage" value="15" min="1">
+
+    <button onclick="createVM()">Create Virtual Machine</button>
+
+    <div id="result"></div>
+
+</div>
+
+<script>
+function createVM() {
+
+    let name = document.getElementById("vmname").value;
+    let os = document.getElementById("os").value;
+    let cpu = document.getElementById("cpu").value;
+    let ram = document.getElementById("ram").value;
+    let storage = document.getElementById("storage").value;
+
+    if (name === "" || cpu < 1 || ram < 1 || storage < 1) {
+        document.getElementById("result").innerHTML =
+        "Please enter valid details!";
+        return;
+    }
+
+    document.getElementById("result").innerHTML =
+        "<h3>VM Created Successfully!</h3>" +
+        "VM Name: " + name + "<br><br>" +
+        "Operating System: " + os + "<br><br>" +
+        "CPU: " + cpu + "<br><br>" +
+        "RAM: " + ram + " GB<br><br>" +
+        "Storage: " + storage + " GB";
+}
+</script>
+
+</body>
+</html>

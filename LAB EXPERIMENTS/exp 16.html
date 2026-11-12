@@ -1,0 +1,200 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Virtual Machine Cloning</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #eaf2f8;
+            text-align: center;
+            padding: 30px;
+        }
+
+        .container {
+            background: white;
+            width: 430px;
+            margin: auto;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 0 10px gray;
+        }
+
+        h2 {
+            color: #1565c0;
+        }
+
+        label {
+            display: block;
+            text-align: left;
+            margin: 15px 10px 5px;
+            font-weight: bold;
+        }
+
+        input, select {
+            width: 90%;
+            padding: 10px;
+            border: 1px solid gray;
+            border-radius: 5px;
+        }
+
+        button {
+            background: #1565c0;
+            color: white;
+            padding: 12px 18px;
+            border: none;
+            margin: 8px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background: #003c80;
+        }
+
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #e8f5e9;
+            color: green;
+            border-radius: 5px;
+            line-height: 1.8;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>Virtual Machine Cloning</h2>
+    <p>VMware Workstation</p>
+
+    <label>Original VM Name</label>
+    <input type="text" id="original" value="Ubuntu VM">
+
+    <label>Operating System</label>
+    <select id="os">
+        <option>Ubuntu Linux</option>
+        <option>Windows</option>
+        <option>Linux</option>
+    </select>
+
+    <label>Clone VM Name</label>
+    <input type="text" id="clone" value="Ubuntu VM Clone">
+
+    <label>Cloning Type</label>
+    <select id="type">
+        <option>Full Clone</option>
+        <option>Linked Clone</option>
+    </select>
+
+    <br>
+
+    <button onclick="createClone()">
+        Create Clone
+    </button>
+
+    <button onclick="modifyOriginal()">
+        Modify Original VM
+    </button>
+
+    <button onclick="testClone()">
+        Test Cloned VM
+    </button>
+
+    <button onclick="restoreOriginal()">
+        Load Previous Version
+    </button>
+
+    <div id="result">
+        Original Virtual Machine is Ready.
+    </div>
+
+</div>
+
+<script>
+
+let cloned = false;
+let originalModified = false;
+
+function createClone() {
+
+    let original = document.getElementById("original").value;
+    let clone = document.getElementById("clone").value;
+    let type = document.getElementById("type").value;
+
+    if (original.trim() === "" || clone.trim() === "") {
+        document.getElementById("result").innerHTML =
+        "Please enter VM names!";
+        return;
+    }
+
+    cloned = true;
+    originalModified = false;
+
+    document.getElementById("result").innerHTML =
+    "<h3>VM Cloned Successfully!</h3>" +
+    "Original VM: " + original +
+    "<br>Cloned VM: " + clone +
+    "<br>Operating System: " +
+    document.getElementById("os").value +
+    "<br>Clone Type: " + type;
+}
+
+function modifyOriginal() {
+
+    if (!cloned) {
+        document.getElementById("result").innerHTML =
+        "Please create a clone first!";
+        return;
+    }
+
+    originalModified = true;
+
+    document.getElementById("result").innerHTML =
+    "<h3>Original VM Modified!</h3>" +
+    "Changes made to Original VM." +
+    "<br>Cloned VM remains unchanged.";
+}
+
+function testClone() {
+
+    if (!cloned) {
+        document.getElementById("result").innerHTML =
+        "Please create a clone first!";
+        return;
+    }
+
+    document.getElementById("result").innerHTML =
+    "<h3>Cloned VM Tested Successfully!</h3>" +
+    "Clone Name: " +
+    document.getElementById("clone").value +
+    "<br>Operating System: " +
+    document.getElementById("os").value +
+    "<br>Test Status: Successful" +
+    "<br>Original VM Changes: " +
+    (originalModified ? "Not Applied to Clone" : "No Changes");
+}
+
+function restoreOriginal() {
+
+    if (!cloned) {
+        document.getElementById("result").innerHTML =
+        "Please create a clone first!";
+        return;
+    }
+
+    originalModified = false;
+
+    document.getElementById("result").innerHTML =
+    "<h3>Previous Version Loaded!</h3>" +
+    "Original VM restored in this demonstration." +
+    "<br>Cloned VM is available for testing.";
+}
+
+</script>
+
+</body>
+</html>

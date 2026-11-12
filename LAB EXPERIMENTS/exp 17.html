@@ -1,0 +1,198 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>VM Hardware Compatibility</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #eaf2f8;
+            text-align: center;
+            padding: 25px;
+        }
+
+        .container {
+            background: white;
+            width: 480px;
+            margin: auto;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 0 10px gray;
+        }
+
+        h2 {
+            color: #1565c0;
+        }
+
+        label {
+            display: block;
+            text-align: left;
+            margin: 12px 10px 5px;
+            font-weight: bold;
+        }
+
+        input, select {
+            width: 90%;
+            padding: 10px;
+            border: 1px solid gray;
+            border-radius: 5px;
+        }
+
+        button {
+            background: #1565c0;
+            color: white;
+            padding: 10px 18px;
+            border: none;
+            margin: 8px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background: #003c80;
+        }
+
+        .terminal {
+            background: black;
+            color: #00ff00;
+            text-align: left;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 8px;
+            min-height: 120px;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+
+        #result {
+            margin-top: 15px;
+            color: green;
+            line-height: 1.8;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>VM Hardware Compatibility</h2>
+    <p>VMware Workstation</p>
+
+    <label>Virtual Machine Name</label>
+    <input type="text" id="vmname" value="Ubuntu VM">
+
+    <label>Current Hardware Compatibility</label>
+    <select id="current">
+        <option>Workstation 16.x</option>
+        <option>Workstation 17.x</option>
+        <option>Workstation 15.x</option>
+    </select>
+
+    <label>New Hardware Compatibility</label>
+    <select id="newversion">
+        <option>Workstation 17.x</option>
+        <option>Workstation 16.x</option>
+        <option>Workstation 15.x</option>
+    </select>
+
+    <button onclick="changeHardware()">
+        Change Compatibility
+    </button>
+
+    <div id="result"></div>
+
+    <h3>UNIX Command Terminal</h3>
+
+    <select id="command">
+        <option value="pwd">pwd</option>
+        <option value="ls">ls</option>
+        <option value="date">date</option>
+        <option value="whoami">whoami</option>
+        <option value="uname -a">uname -a</option>
+        <option value="mkdir test">mkdir test</option>
+        <option value="clear">clear</option>
+    </select>
+
+    <button onclick="runCommand()">Run Command</button>
+
+    <div class="terminal" id="terminal">
+user@ubuntu:~$ Welcome to UNIX Terminal
+    </div>
+
+</div>
+
+<script>
+
+function changeHardware() {
+
+    let vm = document.getElementById("vmname").value;
+    let oldVersion = document.getElementById("current").value;
+    let newVersion = document.getElementById("newversion").value;
+
+    if (vm.trim() === "") {
+        document.getElementById("result").innerHTML =
+        "Please enter VM name!";
+        return;
+    }
+
+    if (oldVersion === newVersion) {
+        document.getElementById("result").innerHTML =
+        "Please select a different compatibility version.";
+        return;
+    }
+
+    document.getElementById("result").innerHTML =
+    "<b>Hardware Compatibility Changed Successfully!</b><br>" +
+    "VM Name: " + vm + "<br>" +
+    "Previous Version: " + oldVersion + "<br>" +
+    "New Version: " + newVersion;
+}
+
+function runCommand() {
+
+    let cmd = document.getElementById("command").value;
+    let output = "";
+
+    switch(cmd) {
+
+        case "pwd":
+            output = "/home/ubuntu";
+            break;
+
+        case "ls":
+            output = "Desktop  Documents  Downloads  Pictures";
+            break;
+
+        case "date":
+            output = new Date().toString();
+            break;
+
+        case "whoami":
+            output = "ubuntu";
+            break;
+
+        case "uname -a":
+            output = "Linux ubuntu 5.15.0 Ubuntu x86_64 GNU/Linux";
+            break;
+
+        case "mkdir test":
+            output = "Directory created successfully (simulation)";
+            break;
+
+        case "clear":
+            document.getElementById("terminal").innerHTML =
+            "user@ubuntu:~$ ";
+            return;
+    }
+
+    document.getElementById("terminal").innerHTML +=
+    "\nuser@ubuntu:~$ " + cmd +
+    "\n" + output + "\n";
+}
+
+</script>
+
+</body>
+</html>

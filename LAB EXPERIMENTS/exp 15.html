@@ -1,0 +1,196 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>VM Snapshot and Clone</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #eaf2f8;
+            text-align: center;
+            padding: 30px;
+        }
+
+        .container {
+            background: white;
+            width: 430px;
+            margin: auto;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 0 10px gray;
+        }
+
+        h2 {
+            color: #1565c0;
+        }
+
+        label {
+            display: block;
+            text-align: left;
+            margin: 12px 10px 5px;
+            font-weight: bold;
+        }
+
+        input, select {
+            width: 90%;
+            padding: 10px;
+            border: 1px solid gray;
+            border-radius: 5px;
+        }
+
+        button {
+            background: #1565c0;
+            color: white;
+            padding: 12px;
+            border: none;
+            margin: 8px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background: #003c80;
+        }
+
+        #result {
+            margin-top: 20px;
+            padding: 12px;
+            background: #e8f5e9;
+            color: green;
+            border-radius: 5px;
+            line-height: 1.8;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>VM Snapshot and Clone</h2>
+    <p>VMware Workstation</p>
+
+    <label>Virtual Machine Name</label>
+    <input type="text" id="vmname" value="Ubuntu VM">
+
+    <label>Operating System</label>
+    <select id="os">
+        <option>Ubuntu Linux</option>
+        <option>Windows</option>
+        <option>Linux</option>
+    </select>
+
+    <label>Snapshot Name</label>
+    <input type="text" id="snapshot" value="Backup Version 1">
+
+    <label>Current VM Status</label>
+    <select id="status">
+        <option>Original Version</option>
+        <option>Modified Version</option>
+    </select>
+
+    <br>
+
+    <button onclick="createSnapshot()">
+        Create Snapshot
+    </button>
+
+    <button onclick="modifyVM()">
+        Modify VM
+    </button>
+
+    <button onclick="restoreVM()">
+        Restore Previous Version
+    </button>
+
+    <button onclick="cloneVM()">
+        Clone VM
+    </button>
+
+    <div id="result">
+        VM is ready.
+    </div>
+
+</div>
+
+<script>
+
+let snapshotCreated = false;
+let modified = false;
+let snapshotName = "";
+
+function createSnapshot() {
+
+    snapshotName = document.getElementById("snapshot").value;
+
+    if (snapshotName.trim() === "") {
+        document.getElementById("result").innerHTML =
+        "Please enter a snapshot name!";
+        return;
+    }
+
+    snapshotCreated = true;
+    modified = false;
+
+    document.getElementById("result").innerHTML =
+    "<h3>Snapshot Created Successfully!</h3>" +
+    "Snapshot Name: " + snapshotName +
+    "<br>Previous VM Version Saved.";
+}
+
+function modifyVM() {
+
+    if (!snapshotCreated) {
+        document.getElementById("result").innerHTML =
+        "Please create a snapshot first!";
+        return;
+    }
+
+    modified = true;
+
+    document.getElementById("result").innerHTML =
+    "<h3>VM Modified Successfully!</h3>" +
+    "Current Version: Modified Version";
+}
+
+function restoreVM() {
+
+    if (!snapshotCreated) {
+        document.getElementById("result").innerHTML =
+        "No snapshot available!";
+        return;
+    }
+
+    modified = false;
+
+    document.getElementById("result").innerHTML =
+    "<h3>Previous Version Loaded Successfully!</h3>" +
+    "Snapshot: " + snapshotName +
+    "<br>VM Restored to Original Version.";
+}
+
+function cloneVM() {
+
+    if (!snapshotCreated) {
+        document.getElementById("result").innerHTML =
+        "Please create a snapshot first!";
+        return;
+    }
+
+    let name = document.getElementById("vmname").value;
+
+    document.getElementById("result").innerHTML =
+    "<h3>Clone Created Successfully!</h3>" +
+    "Original VM: " + name +
+    "<br>Cloned VM: " + name + " Clone" +
+    "<br>Operating System: " +
+    document.getElementById("os").value +
+    "<br>Clone is ready for testing.";
+}
+
+</script>
+
+</body>
+</html>

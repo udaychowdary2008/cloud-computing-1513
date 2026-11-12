@@ -1,0 +1,154 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Virtualization Operating System Installation</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #eaf2f8;
+            text-align: center;
+            padding: 25px;
+        }
+
+        .container {
+            background: white;
+            width: 450px;
+            margin: auto;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 0 10px gray;
+        }
+
+        h2 {
+            color: #1565c0;
+        }
+
+        label {
+            display: block;
+            text-align: left;
+            margin: 12px 10px 5px;
+            font-weight: bold;
+        }
+
+        input, select {
+            width: 90%;
+            padding: 10px;
+            border: 1px solid gray;
+            border-radius: 5px;
+        }
+
+        button {
+            background: #1565c0;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            margin-top: 20px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background: #003c80;
+        }
+
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #e8f5e9;
+            color: green;
+            border-radius: 5px;
+            line-height: 1.8;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>Virtual OS Installation</h2>
+    <p>Windows Host Environment</p>
+
+    <label>Select Virtualization Software</label>
+    <select id="software">
+        <option>Oracle VirtualBox</option>
+        <option>VMware Workstation</option>
+    </select>
+
+    <label>Virtual Machine Name</label>
+    <input type="text" id="vmname" value="My Virtual Machine">
+
+    <label>Select Operating System</label>
+    <select id="os">
+        <option>Ubuntu Linux</option>
+        <option>Kali Linux</option>
+        <option>Linux Mint</option>
+        <option>Windows 10</option>
+        <option>Windows 11</option>
+        <option>Fedora Linux</option>
+    </select>
+
+    <label>CPU Cores</label>
+    <select id="cpu">
+        <option>1 CPU</option>
+        <option>2 CPUs</option>
+        <option>4 CPUs</option>
+    </select>
+
+    <label>RAM Allocation</label>
+    <select id="ram">
+        <option>2 GB</option>
+        <option>4 GB</option>
+        <option>8 GB</option>
+    </select>
+
+    <label>Hard Disk Storage</label>
+    <select id="storage">
+        <option>15 GB</option>
+        <option>20 GB</option>
+        <option>30 GB</option>
+        <option>50 GB</option>
+    </select>
+
+    <button onclick="installOS()">Install Virtual OS</button>
+
+    <div id="result">
+        Select the details and click Install.
+    </div>
+
+</div>
+
+<script>
+
+function installOS() {
+
+    let software = document.getElementById("software").value;
+    let name = document.getElementById("vmname").value;
+    let os = document.getElementById("os").value;
+    let cpu = document.getElementById("cpu").value;
+    let ram = document.getElementById("ram").value;
+    let storage = document.getElementById("storage").value;
+
+    if (name.trim() === "") {
+        document.getElementById("result").innerHTML =
+        "Please enter Virtual Machine Name!";
+        return;
+    }
+
+    document.getElementById("result").innerHTML =
+    "<h3>Virtual Machine Configured Successfully!</h3>" +
+    "Software: " + software + "<br>" +
+    "VM Name: " + name + "<br>" +
+    "Operating System: " + os + "<br>" +
+    "CPU: " + cpu + "<br>" +
+    "RAM: " + ram + "<br>" +
+    "Storage: " + storage + "<br><br>" +
+    "<b>Installation Status: Ready for OS Installation</b>";
+}
+
+</script>
+
+</body>
+</html>
